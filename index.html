@@ -3,9 +3,7 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-    <script type="text/javascript" src="cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js"></script>
-    <!-- <script type="text/javascript" src="d3/d3.geom.js"></script>
-    <script type="text/javascript" src="d3/d3.layout.js"></script> -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js"></script>
   </head>
   <body>
     <div id="body"></div>
@@ -13,7 +11,8 @@
     	var w = 1280,
 			h = 800;
 
-		var nodes = d3.range(200).map(function () {
+		var nodes = d3.range(200)
+			.map(function () {
 				return {
 					radius: Math.random() * 12 + 4
 				};
@@ -21,11 +20,9 @@
 			color = d3.scale.category10();
 
 		var force = d3.layout.force()
-			// .friction(0)
+			.friction(0.95)
 			.gravity(0.05)
-			.charge(function(d, i) {
-				return i ? 0 : -2000;
-			})
+			.charge(-20)
 			.nodes(nodes)
 			.size([w, h]);
 
@@ -41,7 +38,7 @@
 			.attr('height', h);
 
 		svg.selectAll('circle')
-			.data(nodes.slice(1))
+			.data(nodes)
 			.enter()
 			.append('svg:circle')
 			.attr('r', function(d) {
@@ -69,12 +66,12 @@
 				});
 		});
 
-		svg.on('mousemove', function() {
-			var p1 = d3.svg.mouse(this);
-			root.px = p1[0];
-			root.py = p1[1];
-			force.resume();
-		});
+		// svg.on('mousemove', function() {
+		// 	var p1 = d3.svg.mouse(this);
+		// 	root.px = p1[0];
+		// 	root.py = p1[1];
+		// 	force.resume();
+		// });
 
 		function collide(node) {
 			var r = node.radius + 16,
