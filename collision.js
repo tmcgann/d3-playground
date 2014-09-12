@@ -1,6 +1,5 @@
 var w = 1280,
 	h = 800;
-	// isActive = true;
 
 var nodes = d3.range(200)
 	.map(function () {
@@ -46,7 +45,6 @@ force.on('tick', function(e) {
 		n = nodes.length;
 
 	while (++i < n) {
-	// while (isActive) {
 		q.visit(collide(nodes[i]));
 	}
 
@@ -57,7 +55,11 @@ force.on('tick', function(e) {
 		.attr('cy', function(d) {
 			return d.y;
 		});
+	
+	stayAlive();
 });
+
+force.on('end', function () { force.alpha(.1); });
 
 // svg.on('mousemove', function() {
 // 	var p1 = d3.svg.mouse(this);
@@ -121,13 +123,22 @@ function onChargeChange(e) {
 }
 
 function startForce() {
-	// isActive = true;
-	force.resume();
+	force.start();
+}
+
+function stayAlive() {
+	// heartbeat
+	if (force.alpha() <= 0.01) {
+		force.alpha(.1);
+	}
+	
+	// always alive
+	//force.alpha(0.1);
 }
 
 function stopForce(e) {
 	e.preventDefault();
-	isActive = false;
+	force.stop();
 }
 
 function updateForce(options) {
