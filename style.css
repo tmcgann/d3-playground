@@ -3,6 +3,18 @@ body {
   font-family: "Helvetica Neue", Helvetica;
 }
 
+.margin-bottom {
+	margin-bottom: 0.5em;
+}
+
+.right {
+	float: right;
+}
+
+.slider-container {
+	width: 48em;
+}
+
 .slider {
-	width: 50.0em;
+	width: 50em;
 }
