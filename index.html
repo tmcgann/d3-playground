@@ -1,12 +1,23 @@
-
 <!DOCTYPE html>
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="style.css"/>
   </head>
   <body>
-    <div id="body"></div>
+    <div id="sliders">
+    	<label for="friction">Friction: <span id="FrictionVal"></span></label>
+		<input type="range" id="friction" class="slider" min="0.0" max="1.0" step="0.01" value="0.95">
+		<br>
+    	<label for="gravity">Gravity: <span id="GravityVal"></span></label>
+		<input type="range" id="gravity" class="slider" min="0.0" max="1.0" step="0.01" value="0.05">
+		<br>
+    	<label for="charge">Charge: <span id="ChargeVal"></span></label>
+		<input type="range" id="charge" class="slider" min="-2000" max="2000" value="-15">
+    </div>
+    <div id="d3"></div>
     <script type="text/javascript">
     	var w = 1280,
 			h = 800;
@@ -22,7 +33,7 @@
 		var force = d3.layout.force()
 			.friction(0.95)
 			.gravity(0.05)
-			.charge(-20)
+			.charge(-15)
 			.nodes(nodes)
 			.size([w, h]);
 
@@ -32,7 +43,7 @@
 
 		force.start();
 
-		var svg = d3.select('#body')
+		var svg = d3.select('#d3')
 			.append('svg:svg')
 			.attr('width', w)
 			.attr('height', h);
@@ -42,7 +53,8 @@
 			.enter()
 			.append('svg:circle')
 			.attr('r', function(d) {
-				return d.radius - 2;
+				var r = d.radius - 2;
+				return r < 0 ? 0 : r;
 			})
 			.style('fill', function(d, i) {
 				return color(i % 3);
