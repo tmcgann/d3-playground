@@ -9,14 +9,35 @@
 
 		<div id="sliders">
 			<div class="slider-container margin-bottom">
+				<!--
+					Does not correspond to a standard physical coefficient of friction. Instead, it more closely approximates 
+					velocity decay: at each tick of the simulation, the particle velocity is scaled by the specified friction.
+					Default: 0.9
+				-->
 				<label>Friction: {{friction}}</label>
 				<input type="range" id="friction" class="slider right" min="0.0" max="1.0" step="0.01" value="0.95" ng-model="friction">
 			</div>
 			<div class="slider-container margin-bottom">
+				<!--
+					A negative value results in node repulsion, while a positive value results in node attraction. All nodes 
+					are assumed to be infinitesimal points with equal charge and mass. Charge forces are implemented efficiently 
+					via the Barnes–Hut algorithm, computing a quadtree for each tick.
+					Default: -30
+				-->
 				<label>Gravity: {{gravity}}</label>
 				<input type="range" id="gravity" class="slider right" min="0.0" max="1.0" step="0.01" value="0.05" ng-model="gravity">
 			</div>
 			<div class="slider-container margin-bottom">
+				<!--
+					Does not correspond to physical gravity (which can be simulated using a positive charge parameter). 
+					Instead, gravity is implemented as a weak geometric constraint similar to a virtual spring connecting 
+					each node to the center of the layout's size. This approach has nice properties: near the center of the 
+					layout, the gravitational strength is almost zero, avoiding any local distortion of the layout; as nodes 
+					get pushed farther away from the center, the gravitational strength becomes stronger in linear proportion 
+					to the distance. Thus, gravity will always overcome repulsive charge forces at some threshold, preventing 
+					disconnected nodes from escaping the layout.
+					Default: 0.1
+				-->
 				<label>Charge: {{charge}}</label>
 				<input type="range" id="charge" class="slider right" min="-2000" max="2000" value="-15" ng-model="charge">
 			</div>
