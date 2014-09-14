@@ -16,9 +16,9 @@ var force = d3.layout.force()
 	.nodes(nodes)
 	.size([w, h]);
 
-var root = nodes[0];
-root.radius = 0;
-root.fixed = true;
+// var root = nodes[0];
+// root.radius = 0;
+// root.fixed = true;
 
 force.start();
 
@@ -55,11 +55,9 @@ force.on('tick', function(e) {
 		.attr('cy', function(d) {
 			return d.y;
 		});
-	
+
 	stayAlive();
 });
-
-force.on('end', function () { force.alpha(.1); });
 
 // svg.on('mousemove', function() {
 // 	var p1 = d3.svg.mouse(this);
@@ -122,16 +120,19 @@ function onChargeChange(e) {
 	startForce();
 }
 
-function startForce() {
+function startForce(e) {
+	if (e) {
+		e.preventDefault();
+	}
 	force.start();
 }
 
 function stayAlive() {
 	// heartbeat
 	if (force.alpha() <= 0.01) {
-		force.alpha(.1);
+		force.alpha(0.1);
 	}
-	
+
 	// always alive
 	//force.alpha(0.1);
 }
@@ -159,4 +160,5 @@ function updateForce(options) {
 $(document).on('change', 'input#friction', onFrictionChange);
 $(document).on('change', 'input#gravity', onGravityChange);
 $(document).on('change', 'input#charge', onChargeChange);
+$(document).on('click', 'button#StartButton', startForce);
 $(document).on('click', 'button#StopButton', stopForce);

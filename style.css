@@ -3,6 +3,10 @@ body {
   font-family: "Helvetica Neue", Helvetica;
 }
 
+/*#body {
+	text-align: center;
+}*/
+
 .margin-bottom {
 	margin-bottom: 0.5em;
 }
