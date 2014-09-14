@@ -131,10 +131,13 @@ function stayAlive() {
 	// heartbeat
 	if (force.alpha() <= 0.01) {
 		force.alpha(0.1);
+		return;
 	}
 
-	// always alive
-	//force.alpha(0.1);
+	// pertual
+	if (false) {
+		force.alpha(0.1);
+	}
 }
 
 function stopForce(e) {

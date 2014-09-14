@@ -7,8 +7,8 @@
 	</head>
 
 	<body ng-app="collisionApp">
-		<form id="body" ng-controller="collisionController">
-			<div>
+		<div id="body" ng-controller="collisionController">
+			<form>
 				<div class="slider-container margin-bottom">
 					<!--
 						Does not correspond to a standard physical coefficient of friction. Instead, it more closely approximates
@@ -43,18 +43,18 @@
 					<input type="range" id="charge" class="slider right" min="-2000" max="2000" value="-15" ng-model="charge">
 				</div>
 				<div>
-					<input type="radio" name="forceLife" ng-model="forceLife" ng-value="enums.forceLife.DECAY">Decay
-					<input type="radio" name="forceLife" ng-model="forceLife" ng-value="enums.forceLife.PERPETUAL">Perpetual
-					<input type="radio" name="forceLife" ng-model="forceLife" ng-value="enums.forceLife.HEARTBEAT">Heartbeat
+					<input type="radio" ng-model="forceLife" ng-value="enums.forceLife.DECAY">Decay
+					<input type="radio" ng-model="forceLife" ng-value="enums.forceLife.PERPETUAL">Perpetual
+					<input type="radio" ng-model="forceLife" ng-value="enums.forceLife.HEARTBEAT">Heartbeat
 				</div>
 				<div>
 					<button id="StartButton">Start!</button>
 					<button id="StopButton">Stop!</button>
 				</div>
-			</div>
+			</form>
 
 			<div id="d3"></div>
-		</form><!-- #body -->
+		</div><!-- #body -->
 
 		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>

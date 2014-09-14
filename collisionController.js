@@ -20,3 +20,6 @@ collisionApp.controller('collisionController', ['$scope', (function () {
 
 	return collisionController;
 }())]);
+
+// create a factory or service for the d3 stuff
+// pass that dependency into the controller to manipulate the force data
