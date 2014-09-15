@@ -17,7 +17,7 @@
 					-->
 					<label>Friction: </label>
 					<input type="text" class="input-text x-small" ng-model="friction" ng-change="onFrictionChange(friction)">
-					<input type="range" class="slider right" min="0.0" max="1.0" step="0.01" value="0.95" ng-model="friction" ng-change="onFrictionChange(friction)">
+					<input type="range" class="slider right" min="0.0" max="1.0" step="0.01" ng-model="friction" ng-change="onFrictionChange(friction)">
 				</div>
 				<div class="slider-container margin-bottom">
 					<!--
@@ -32,7 +32,7 @@
 					-->
 					<label>Gravity: </label>
 					<input type="text" class="input-text x-small" ng-model="gravity" ng-change="onGravityChange(gravity)">
-					<input type="range" class="slider right" min="0.0" max="1.0" step="0.01" value="0.05" ng-model="gravity" ng-change="onGravityChange(gravity)">
+					<input type="range" class="slider right" min="0.0" max="1.0" step="0.01" ng-model="gravity" ng-change="onGravityChange(gravity)">
 				</div>
 				<div class="slider-container margin-bottom">
 					<!--
@@ -43,7 +43,7 @@
 					-->
 					<label>Charge: </label>
 					<input type="text" class="input-text x-small" ng-model="charge" ng-change="onChargeChange(charge)">
-					<input type="range" class="slider right" min="-2000" max="2000" value="-15" ng-model="charge" ng-change="onChargeChange(charge)">
+					<input type="range" class="slider right" min="-2000" max="2000" ng-model="charge" ng-change="onChargeChange(charge)">
 				</div>
 				<div class="margin-bottom">
 					<input type="radio" ng-model="forceLife" ng-value="enums.forceLife.DECAY" ng-change="onForceLifeChange(forceLife)">Decay
@@ -68,3 +68,16 @@
 		<script type="text/javascript" src="enums.js"></script>
 	</body>
 </html>
+
+<!--
+
+TODO:
+	- pull all the min, max, value stuff out of the html and bind it with angular in the JS
+	- figure out how to load only one file for angular and the rest get loaded in the app file somehow
+	- create a SPA with a main D3 page that has a ToC that links to the rest of the pages I will be creating to explore D3
+	- use gulp or grunt in addition to a build server minify and version as necessary
+	- create other pages
+		- my photo map
+		- Kevin's map sample
+
+-->
