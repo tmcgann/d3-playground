@@ -15,8 +15,9 @@
 						velocity decay: at each tick of the simulation, the particle velocity is scaled by the specified friction.
 						Default: 0.9
 					-->
-					<label>Friction: {{friction | number: 2}}</label>
-					<input type="range" id="friction" class="slider right" min="0.0" max="1.0" step="0.01" value="0.95" ng-model="friction" ng-change="onFrictionChange(friction)">
+					<label>Friction: </label>
+					<input type="text" class="input-text x-small" ng-model="friction" ng-change="onFrictionChange(friction)">
+					<input type="range" class="slider right" min="0.0" max="1.0" step="0.01" value="0.95" ng-model="friction" ng-change="onFrictionChange(friction)">
 				</div>
 				<div class="slider-container margin-bottom">
 					<!--
@@ -29,8 +30,9 @@
 						disconnected nodes from escaping the layout.
 						Default: 0.1
 					-->
-					<label>Gravity: {{gravity | number: 2}}</label>
-					<input type="range" id="gravity" class="slider right" min="0.0" max="1.0" step="0.01" value="0.05" ng-model="gravity" ng-change="onGravityChange(gravity)">
+					<label>Gravity: </label>
+					<input type="text" class="input-text x-small" ng-model="gravity" ng-change="onGravityChange(gravity)">
+					<input type="range" class="slider right" min="0.0" max="1.0" step="0.01" value="0.05" ng-model="gravity" ng-change="onGravityChange(gravity)">
 				</div>
 				<div class="slider-container margin-bottom">
 					<!--
@@ -39,10 +41,11 @@
 						via the Barnes–Hut algorithm, computing a quadtree for each tick.
 						Default: -30
 					-->
-					<label>Charge: {{charge}}</label>
-					<input type="range" id="charge" class="slider right" min="-2000" max="2000" value="-15" ng-model="charge" ng-change="onChargeChange(charge)">
+					<label>Charge: </label>
+					<input type="text" class="input-text x-small" ng-model="charge" ng-change="onChargeChange(charge)">
+					<input type="range" class="slider right" min="-2000" max="2000" value="-15" ng-model="charge" ng-change="onChargeChange(charge)">
 				</div>
-				<div>
+				<div class="margin-bottom">
 					<input type="radio" ng-model="forceLife" ng-value="enums.forceLife.DECAY" ng-change="onForceLifeChange(forceLife)">Decay
 					<input type="radio" ng-model="forceLife" ng-value="enums.forceLife.PERPETUAL" ng-change="onForceLifeChange(forceLife)">Perpetual
 					<input type="radio" ng-model="forceLife" ng-value="enums.forceLife.HEARTBEAT" ng-change="onForceLifeChange(forceLife)">Heartbeat

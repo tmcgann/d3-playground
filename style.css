@@ -7,8 +7,16 @@ body {
 	text-align: center;
 }*/
 
+.input-text.x-small {
+	width: 4em;
+}
+
 .margin-bottom {
-	margin-bottom: 0.5em;
+	margin-bottom: 1em;
+}
+
+.margin-right {
+	margin-right: 1em;
 }
 
 .right {
