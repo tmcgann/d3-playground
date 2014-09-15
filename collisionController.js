@@ -8,7 +8,7 @@ collisionApp.controller('collisionController', ['$scope', 'collisionFactory', 'e
 		$scope.onChargeChange = collisionFactory.onChargeChange;
 
 		$scope.enums = enums;
-		$scope.forceLife = enums.forceLife.DECAY;
+		$scope.forceLife = collisionFactory.getForceLife();
 
 		$scope.onForceLifeChange = collisionFactory.onForceLifeChange;
 		$scope.startForce = collisionFactory.startForce;

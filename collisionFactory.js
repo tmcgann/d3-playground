@@ -1,7 +1,7 @@
 collisionApp.factory('collisionFactory', ['enums', function (enums) {
 	var w = 1280,
 		h = 800,
-		forceLife = enums.forceLife.DECAY,
+		forceLife = enums.forceLife.PERPETUAL,
 		color,
 		force,
 		nodes,
@@ -37,6 +37,10 @@ collisionApp.factory('collisionFactory', ['enums', function (enums) {
 				|| y1 > ny2
 				|| y2 < ny1;
 		};
+	}
+
+	function getForceLife() {
+		return forceLife;
 	}
 
 	function init() {
@@ -190,6 +194,7 @@ collisionApp.factory('collisionFactory', ['enums', function (enums) {
 	}
 
 	return {
+		getForceLife: getForceLife,
 		onChargeChange: onChargeChange,
 		onForceLifeChange: onForceLifeChange,
 		onFrictionChange: onFrictionChange,
