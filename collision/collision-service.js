@@ -1,4 +1,4 @@
-collisionApp.factory('collisionFactory', ['enums', function (enums) {
+collision.factory('collisionService', ['enumsService', function (enums) {
 	var w = 1280,
 		h = 800,
 		forceLife = enums.forceLife.PERPETUAL,

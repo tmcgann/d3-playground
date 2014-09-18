@@ -1,0 +1,51 @@
+<div ng-controller="collisionController">
+	<form>
+		<div class="slider-container margin-bottom">
+			<!--
+				Does not correspond to a standard physical coefficient of friction. Instead, it more closely approximates
+				velocity decay: at each tick of the simulation, the particle velocity is scaled by the specified friction.
+				Default: 0.9
+			-->
+			<label>Friction: </label>
+			<input type="text" class="input-text x-small" ng-model="friction" ng-change="onFrictionChange(friction)">
+			<input type="range" class="slider right" min="0.0" max="1.0" step="0.01" ng-model="friction" ng-change="onFrictionChange(friction)">
+		</div>
+		<div class="slider-container margin-bottom">
+			<!--
+				Does not correspond to physical gravity (which can be simulated using a positive charge parameter).
+				Instead, gravity is implemented as a weak geometric constraint similar to a virtual spring connecting
+				each node to the center of the layout's size. This approach has nice properties: near the center of the
+				layout, the gravitational strength is almost zero, avoiding any local distortion of the layout; as nodes
+				get pushed farther away from the center, the gravitational strength becomes stronger in linear proportion
+				to the distance. Thus, gravity will always overcome repulsive charge forces at some threshold, preventing
+				disconnected nodes from escaping the layout.
+				Default: 0.1
+			-->
+			<label>Gravity: </label>
+			<input type="text" class="input-text x-small" ng-model="gravity" ng-change="onGravityChange(gravity)">
+			<input type="range" class="slider right" min="0.0" max="1.0" step="0.01" ng-model="gravity" ng-change="onGravityChange(gravity)">
+		</div>
+		<div class="slider-container margin-bottom">
+			<!--
+				A negative value results in node repulsion, while a positive value results in node attraction. All nodes
+				are assumed to be infinitesimal points with equal charge and mass. Charge forces are implemented efficiently
+				via the Barnes–Hut algorithm, computing a quadtree for each tick.
+				Default: -30
+			-->
+			<label>Charge: </label>
+			<input type="text" class="input-text x-small" ng-model="charge" ng-change="onChargeChange(charge)">
+			<input type="range" class="slider right" min="-2000" max="2000" ng-model="charge" ng-change="onChargeChange(charge)">
+		</div>
+		<div class="margin-bottom">
+			<input type="radio" ng-model="forceLife" ng-value="enums.forceLife.DECAY" ng-change="onForceLifeChange(forceLife)">Decay
+			<input type="radio" ng-model="forceLife" ng-value="enums.forceLife.PERPETUAL" ng-change="onForceLifeChange(forceLife)">Perpetual
+			<input type="radio" ng-model="forceLife" ng-value="enums.forceLife.HEARTBEAT" ng-change="onForceLifeChange(forceLife)">Heartbeat
+		</div>
+		<div>
+			<button ng-click="startForce()">Start!</button>
+			<button ng-click="stopForce()">Stop!</button>
+		</div>
+	</form>
+
+	<div id="d3"></div>
+</div>

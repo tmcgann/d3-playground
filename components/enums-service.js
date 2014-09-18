@@ -1,4 +1,4 @@
-collisionApp.factory('enums', [function () {
+app.factory('enumsService', [function () {
 	return {
 		forceLife: {
 			DECAY: 1,
