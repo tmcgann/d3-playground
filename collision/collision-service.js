@@ -9,6 +9,15 @@ collision.factory('collisionService', ['enumsService', function (enums) {
 
 	init();
 
+	function activate() {
+		force.start();
+		initSVG();
+	}
+
+	function deactivate() {
+		force.stop();
+	}
+
 	function collide(node) {
 		var r = node.radius + 16,
 			nx1 = node.x - r,
@@ -39,35 +48,26 @@ collision.factory('collisionService', ['enumsService', function (enums) {
 		};
 	}
 
+	function getCharge() {
+		return force.charge();
+	}
+
 	function getForceLife() {
 		return forceLife;
+	}
+
+	function getFriction() {
+		return force.friction();
+	}
+
+	function getGravity() {
+		return force.gravity();
 	}
 
 	function init() {
 		initNodes();
 		initColor();
 		initForce();
-		initSVG();
-
-		force.on('tick', function(e) {
-			var q = d3.geom.quadtree(nodes),
-				i = 0,
-				n = nodes.length;
-
-			while (++i < n) {
-				q.visit(collide(nodes[i]));
-			}
-
-			svg.selectAll('circle')
-				.attr('cx', function(d) {
-					return d.x;
-				})
-				.attr('cy', function(d) {
-					return d.y;
-				});
-
-			updateForceLife();
-		});
 
 		// var root = nodes[0];
 		// root.radius = 0;
@@ -93,7 +93,25 @@ collision.factory('collisionService', ['enumsService', function (enums) {
 			.nodes(nodes)
 			.size([w, h]);
 
-		force.start();
+		force.on('tick', function(e) {
+			var q = d3.geom.quadtree(nodes),
+				i = 0,
+				n = nodes.length;
+
+			while (++i < n) {
+				q.visit(collide(nodes[i]));
+			}
+
+			svg.selectAll('circle')
+				.attr('cx', function(d) {
+					return d.x;
+				})
+				.attr('cy', function(d) {
+					return d.y;
+				});
+
+			updateForceLife();
+		});
 	}
 
 	function initNodes() {
@@ -106,6 +124,8 @@ collision.factory('collisionService', ['enumsService', function (enums) {
 	}
 
 	function initSVG() {
+		d3.selectAll('#d3 svg').remove();
+
 		svg = d3.select('#d3')
 			.append('svg:svg')
 			.attr('width', w)
@@ -194,7 +214,12 @@ collision.factory('collisionService', ['enumsService', function (enums) {
 	}
 
 	return {
+		activate: activate,
+		deactivate: deactivate,
+		getCharge: getCharge,
 		getForceLife: getForceLife,
+		getFriction: getFriction,
+		getGravity: getGravity,
 		onChargeChange: onChargeChange,
 		onForceLifeChange: onForceLifeChange,
 		onFrictionChange: onFrictionChange,

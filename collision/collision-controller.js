@@ -1,8 +1,10 @@
 collision.controller('collisionController', ['$scope', 'collisionService', 'enumsService',
 	function ($scope, collisionService, enumsService) {
-		$scope.friction = 0.95;
-		$scope.gravity = 0.05;
-		$scope.charge = -15;
+		collisionService.activate();
+
+		$scope.friction = collisionService.getFriction();
+		$scope.gravity = collisionService.getGravity();
+		$scope.charge = collisionService.getCharge();
 		$scope.onFrictionChange = collisionService.onFrictionChange;
 		$scope.onGravityChange = collisionService.onGravityChange;
 		$scope.onChargeChange = collisionService.onChargeChange;
@@ -13,4 +15,10 @@ collision.controller('collisionController', ['$scope', 'collisionService', 'enum
 		$scope.onForceLifeChange = collisionService.onForceLifeChange;
 		$scope.startForce = collisionService.startForce;
 		$scope.stopForce = collisionService.stopForce;
+
+		$scope.$on('$destroy', onDestroy);
+
+		function onDestroy() {
+			collisionService.deactivate();
+		}
 	}]);
