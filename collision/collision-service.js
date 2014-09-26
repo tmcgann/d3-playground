@@ -124,6 +124,8 @@ collision.factory('collisionService', ['enumsService', function (enums) {
 	}
 
 	function initSVG() {
+		var radiusOffset = 1;
+
 		d3.selectAll('#d3 svg').remove();
 
 		svg = d3.select('#d3')
@@ -136,11 +138,11 @@ collision.factory('collisionService', ['enumsService', function (enums) {
 			.enter()
 			.append('svg:circle')
 			.attr('r', function(d) {
-				var r = d.radius - 2;
+				var r = d.radius - radiusOffset;
 				return r < 0 ? 0 : r;
 			})
 			.style('fill', function(d, i) {
-				return color(i % 3);
+				return color(Math.round(Math.sqrt(d.radius)));
 			});
 	}
 
