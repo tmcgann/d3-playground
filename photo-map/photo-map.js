@@ -1,0 +1,1 @@
+var photoMap = angular.module('photoMap', []);

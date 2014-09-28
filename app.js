@@ -2,7 +2,8 @@ var app = angular.module('app', [
 	'ngRoute',
 	'appControllers',
 	'home',
-	'collision'
+	'collision',
+	'photoMap'
 ]);
 
 app.config(['$routeProvider',
@@ -15,6 +16,10 @@ app.config(['$routeProvider',
 			.when('/collision', {
 				templateUrl: 'collision/collision.html',
         		controller: 'collisionController'
+			})
+			.when('/photo-map', {
+				templateUrl: 'photo-map/photo-map.html',
+        		controller: 'photoMapController'
 			})
 			.otherwise({
 				redirectTo: '/home'
