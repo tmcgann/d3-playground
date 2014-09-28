@@ -12,8 +12,8 @@
 .bubble {
 	fill: blue;
 	fill-opacity: .5;
-	stroke: #fff;
-	stroke-width: .5px;
+	/*stroke: #fff;
+	stroke-width: .5px;*/
 }
 
 .bubble :hover {

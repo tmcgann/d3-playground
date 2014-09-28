@@ -1,4 +1,4 @@
-photoMap.factory('photoMapService', [function () {
+photoMap.factory('photoMapService', ['$q', function ($q) {
 	var width = 960,
 		height = 600,
 		mapJSON = 'photo-map/us_alt.json',
@@ -70,20 +70,27 @@ photoMap.factory('photoMapService', [function () {
 				return console.error(error);
 			}
 
+			_.each(photos, function (item) {
+				item.GPSLatitude = parseFloat(item.GPSLatitude) || 0;
+				item.GPSLongitude = parseFloat(item.GPSLongitude) || 0;
+				item.GPSAltitude = parseFloat(item.GPSAltitude) || 0;
+				item.coordinates = projection([item.GPSLongitude, item.GPSLatitude]) || [0, 0];
+			});
+
 			svg.append('g')
 					.attr('class', 'bubble')
 				.selectAll('circle')
 					.data(photos)
 				.enter().append('circle')
-					// .attr('transform', function (d) {
-					// 	return 'translate(' + ')';
+					.attr('transform', function (d) {
+						return 'translate(' + projection([d.GPSLongitude, d.GPSLatitude]) + ')';
+					})
+					// .attr('cx', function(d) {
+					// 	return d.coordinates[1];
 					// })
-					.attr('cx', function(d) {
-						return parseFloat(d.GPSLongitude);
-					})
-					.attr('cy', function(d) {
-						return parseFloat(d.GPSLatitude);
-					})
+					// .attr('cy', function(d) {
+					// 	return d.coordinates[0];
+					// })
 					.attr('r', function(d) {
 						return 3;
 					});
