@@ -22,9 +22,12 @@ photoMap.factory('photoMapService', ['$q', function ($q) {
 	}
 
 	function initMap() {
+		var def = $q.defer();
+
 		d3.json(mapJSON, function(error, us) {
 			if (error) {
 				return console.error(error);
+				def.reject();
 			}
 
 			// svg.append('path')
@@ -46,7 +49,11 @@ photoMap.factory('photoMapService', ['$q', function ($q) {
 				.datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
 				.attr("class", "state-boundary")
 				.attr("d", path);
+
+			def.resolve();
 		});
+
+		return def.promise;
 	}
 
 	function initNumberFormat() {
@@ -58,7 +65,7 @@ photoMap.factory('photoMapService', ['$q', function ($q) {
 		// 	.projection(null);
 
 		projection = d3.geo.albersUsa()
-			.scale(1000)
+			.scale(1200)
 		    .translate([width / 2, height / 2]);
 		path = d3.geo.path()
 			.projection(projection);
@@ -110,8 +117,7 @@ photoMap.factory('photoMapService', ['$q', function ($q) {
 			.attr('width', width)
 			.attr('height', height);
 
-		initMap();
-		initPhotos();
+		initMap().then(initPhotos);
 
 		// d3.select(self.frameElement).style('height', height + 'px');
 	}
