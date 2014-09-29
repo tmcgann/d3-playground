@@ -16,15 +16,15 @@ sourceFile = ARGV[0]
 File.open(sourceFile).each do |line|
 
 	# regex isn't stored in a variable because this way the variables (i.e degrees, minutes, etc.) are automatically instantiated
-	matchesLatLong = /(?<degrees>\d+) deg (?<minutes>\d+)' (?<seconds>\d+\.?\d+)\\\" (?<hemisphere>[NSEW])/i =~ line
-	matchesAlt = /(?<altitude>\d+\.?\d*) m (?<level>[\w\s]+)/i =~ line
+	matchesLatLong = /"(?<degrees>\d+) deg (?<minutes>\d+)' (?<seconds>\d+\.?\d+)\\\" (?<hemisphere>[NSEW])"/i =~ line
+	matchesAlt = /"(?<altitude>\d+\.?\d*) m (?<level>[\w\s]+)"/i =~ line
 
 	if matchesLatLong
-		line = line.gsub(/(?<degrees>\d+) deg (?<minutes>\d+)' (?<seconds>\d+\.?\d+)\\\" (?<hemisphere>[NSEW])/i, convert_dms_to_decimal(degrees, minutes, seconds, hemisphere))
+		line = line.gsub(/"\d+ deg .+ [NSEW]"/i, convert_dms_to_decimal(degrees, minutes, seconds, hemisphere))
 	end
 
 	if matchesAlt
-		line = line.gsub(/(?<altitude>\d+\.?\d*) m (?<level>[\w\s]+)/i, convert_altitude(altitude, level))
+		line = line.gsub(/"\d+\.?\d* m [\w\s]+"/i, convert_altitude(altitude, level))
 	end
 
 	puts line
