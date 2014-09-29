@@ -22,7 +22,7 @@ photoMap.factory('photoMapService', ['$q', function ($q) {
 		initRadiusScale();
 		initColor();
 	}
-	
+
 	function initColor() {
 		color = d3.scale.linear()
 			.domain([-100, 0, 2000, 12000])
@@ -87,10 +87,9 @@ photoMap.factory('photoMapService', ['$q', function ($q) {
 
 			_.chain(photos)
 				.each(function (item) {
-					item.GPSLatitude = parseFloat(item.GPSLatitude) || 0;
-					item.GPSLongitude = parseFloat(item.GPSLongitude) || 0;
-					item.GPSAltitude = parseFloat(item.GPSAltitude) || null;
-					item.coordinates = projection([item.GPSLongitude, item.GPSLatitude]) || [0, 0];
+					item.GPSLatitude = item.GPSLatitude || 0;
+					item.GPSLongitude = item.GPSLongitude || 0;
+					item.GPSAltitude = item.GPSAltitude || null;
 				})
 				.reject(function (item) {
 					return !item.GPSLatitude || !item.GPSLongitude;
