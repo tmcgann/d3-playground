@@ -3,6 +3,7 @@ photoMap.factory('photoMapService', ['$q', function ($q) {
 		height = 600,
 		mapJSON = 'photo-map/us_alt.json',
 		photosJSON = 'photo-map/photos.json',
+		color,
 		formatNumber,
 		path,
 		projection,
@@ -19,6 +20,13 @@ photoMap.factory('photoMapService', ['$q', function ($q) {
 		initNumberFormat();
 		initPath();
 		initRadiusScale();
+		initColor();
+	}
+	
+	function initColor() {
+		color = d3.scale.linear()
+			.domain([-100, 0, 2000, 12000])
+			.range(['blue','green','yellow','orange']);
 	}
 
 	function initMap() {
@@ -77,12 +85,16 @@ photoMap.factory('photoMapService', ['$q', function ($q) {
 				return console.error(error);
 			}
 
-			_.each(photos, function (item) {
-				item.GPSLatitude = parseFloat(item.GPSLatitude) || 0;
-				item.GPSLongitude = parseFloat(item.GPSLongitude) || 0;
-				item.GPSAltitude = parseFloat(item.GPSAltitude) || 0;
-				item.coordinates = projection([item.GPSLongitude, item.GPSLatitude]) || [0, 0];
-			});
+			_.chain(photos)
+				.each(function (item) {
+					item.GPSLatitude = parseFloat(item.GPSLatitude) || 0;
+					item.GPSLongitude = parseFloat(item.GPSLongitude) || 0;
+					item.GPSAltitude = parseFloat(item.GPSAltitude) || null;
+					item.coordinates = projection([item.GPSLongitude, item.GPSLatitude]) || [0, 0];
+				})
+				.reject(function (item) {
+					return !item.GPSLatitude || !item.GPSLongitude;
+				});
 
 			svg.append('g')
 					.attr('class', 'bubble')
@@ -98,8 +110,14 @@ photoMap.factory('photoMapService', ['$q', function ($q) {
 					// .attr('cy', function(d) {
 					// 	return d.coordinates[0];
 					// })
-					.attr('r', function(d) {
+					.attr('r', function (d) {
 						return 3;
+					})
+					.style('fill', function (d) {
+						if (d.GPSAltitude) {
+							return color(d.GPSAltitude);
+						}
+						return '#ddd';
 					});
 		});
 	}
