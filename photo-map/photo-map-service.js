@@ -3,6 +3,7 @@ photoMap.factory('photoMapService', ['$q', function ($q) {
 		height = 600,
 		mapJSON = 'photo-map/us_alt.json',
 		photosJSON = 'photo-map/photos.json',
+		color,
 		formatNumber,
 		path,
 		projection,
@@ -19,6 +20,12 @@ photoMap.factory('photoMapService', ['$q', function ($q) {
 		initNumberFormat();
 		initPath();
 		initRadiusScale();
+	}
+	
+	function initColor() {
+		color = d3.scale.linear()
+			.domain([-100, 0, 2000, 12000])
+			.range(['blue','green','yellow','orange']);
 	}
 
 	function initMap() {
@@ -98,8 +105,11 @@ photoMap.factory('photoMapService', ['$q', function ($q) {
 					// .attr('cy', function(d) {
 					// 	return d.coordinates[0];
 					// })
-					.attr('r', function(d) {
+					.attr('r', function (d) {
 						return 3;
+					})
+					.style('fill', function (d) {
+						return color(d.GPSAltitude);
 					});
 		});
 	}
