@@ -20,6 +20,7 @@ photoMap.factory('photoMapService', ['$q', function ($q) {
 		initNumberFormat();
 		initPath();
 		initRadiusScale();
+		initColor();
 	}
 	
 	function initColor() {
@@ -84,12 +85,16 @@ photoMap.factory('photoMapService', ['$q', function ($q) {
 				return console.error(error);
 			}
 
-			_.each(photos, function (item) {
-				item.GPSLatitude = parseFloat(item.GPSLatitude) || 0;
-				item.GPSLongitude = parseFloat(item.GPSLongitude) || 0;
-				item.GPSAltitude = parseFloat(item.GPSAltitude) || 0;
-				item.coordinates = projection([item.GPSLongitude, item.GPSLatitude]) || [0, 0];
-			});
+			_.chain(photos)
+				.each(function (item) {
+					item.GPSLatitude = parseFloat(item.GPSLatitude) || 0;
+					item.GPSLongitude = parseFloat(item.GPSLongitude) || 0;
+					item.GPSAltitude = parseFloat(item.GPSAltitude) || null;
+					item.coordinates = projection([item.GPSLongitude, item.GPSLatitude]) || [0, 0];
+				})
+				.reject(function (item) {
+					return !item.GPSLatitude || !item.GPSLongitude;
+				});
 
 			svg.append('g')
 					.attr('class', 'bubble')
@@ -109,7 +114,10 @@ photoMap.factory('photoMapService', ['$q', function ($q) {
 						return 3;
 					})
 					.style('fill', function (d) {
-						return color(d.GPSAltitude);
+						if (d.GPSAltitude) {
+							return color(d.GPSAltitude);
+						}
+						return '#ddd';
 					});
 		});
 	}
