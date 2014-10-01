@@ -2,5 +2,12 @@
 	<div class="margin-bottom">
 		<a href="#/home">Home</a>
 	</div>
-	<div id="d3"></div>
+	<form>
+		<div class="margin-bottom">
+			<input type="radio" ng-model="selectedMapType" ng-value="enums.mapType.ALBERS_USA">US Map
+			<input type="radio" ng-model="selectedMapType" ng-value="enums.mapType.ORTHOGRAPHIC">World Map
+		</div>
+	</form>
+	<div id="USMap" ng-show="isMapVisible(enums.mapType.ALBERS_USA)"></div>
+	<div id="WorldMap" ng-show="isMapVisible(enums.mapType.ORTHOGRAPHIC)"></div>
 </div>

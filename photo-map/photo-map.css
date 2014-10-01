@@ -1,4 +1,8 @@
-.land {
+.land-dark {
+	fill: #333;
+}
+
+.land-light {
 	fill: #ddd;
 }
 
@@ -7,6 +11,19 @@
 	stroke: #fff;
 	stroke-linejoin: round;
 	stroke-linecap: round;
+}
+
+.graticule {
+	fill: none;
+	stroke: #777;
+	stroke-width: .5px;
+	stroke-opacity: .5;
+}
+
+.boundary {
+	fill: none;
+	stroke: #fff;
+	stroke-width: .5px;
 }
 
 .bubble {
