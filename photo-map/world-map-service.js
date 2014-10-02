@@ -5,6 +5,7 @@ photoMap.factory('worldMapService', ['$q', function ($q) {
 		mapJSON = 'photo-map/world-110m.json',
 		photosJSON = 'photo-map/photos.json',
 		color,
+		graticule,
 		lambda,
 		path,
 		phi,
@@ -21,13 +22,18 @@ photoMap.factory('worldMapService', ['$q', function ($q) {
 	function init() {
 		initMovementScales();
 		initPath();
+		initGraticule();
 		initColor();
 	}
 
 	function initColor() {
 		color = d3.scale.linear()
 			.domain([-100, 0, 2000, 12000])
-			.range(['blue','green','yellow','orange']);
+			.range(['blue', 'green', 'yellow', 'orange']);
+	}
+
+	function initGraticule() {
+		graticule = d3.geo.graticule();
 	}
 
 	function initMap() {
@@ -39,7 +45,7 @@ photoMap.factory('worldMapService', ['$q', function ($q) {
 				def.reject();
 			}
 
-			svg.append('path')
+			svg.insert('path', '.graticule')
 				.datum(topojson.feature(world, world.objects.land))
 				.attr('class', 'land-dark')
 				.attr('d', path);
@@ -57,19 +63,31 @@ photoMap.factory('worldMapService', ['$q', function ($q) {
 
 	function initMovement() {
 		svg.on('mousemove', function rotate() {
-			var p = d3.mouse(this);
-			projection.rotate([lambda(p[0]), phi(p[1])]);
-			svg.selectAll('path').attr('d', path);
-			transformPhotoMarkers();
+			var p = d3.mouse(this),
+				lambdaOutput = lambda(p[0]),
+				phiOutput = phi(p[1]);
 
-			function transformPhotoMarkers() {
-				svg.selectAll('circle')
-						.data(photos)
-					.enter().append('circle')
-						.attr('transform', function (d) {
-							return 'translate(' + projection([d.GPSLongitude, d.GPSLatitude]) + ')';
-						});
-			}
+			projection.rotate([lambdaOutput, phiOutput]);
+
+			svg.selectAll('path')
+				.attr('d', path);
+
+			svg.selectAll('circle')
+				.attr('transform', function (d) {
+					return 'translate(' + projection([d.GPSLongitude, d.GPSLatitude]) + ')';
+				})
+				// .attr('display', function (d) {
+				// 	var rotatedLong = d.GPSLongitude + lambdaOutput,
+				// 		rotatedLat = d.GPSLatitude + phiOutput,
+				// 		longitudeCeiling = phiOutput > 0 ? 90 + phiOutput : 90,
+				// 		longitudeFloor = phiOutput < 0 ? -90 + phiOutput : -90,
+				// 		latitudeCeiling = lambdaOutput > 0 ? 90 + lambdaOutput : 90,
+				// 		latitudeFloor = lambdaOutput < 0 ? -90 + lambdaOutput : -90,
+				// 		isLongitudeVisible = rotatedLong > longitudeFloor && rotatedLong < longitudeCeiling,
+				// 		isLatitudeVisible = (rotatedLat > latitudeFloor && rotatedLat < latitudeCeiling),
+				// 		isVisible = isLongitudeVisible && isLatitudeVisible;
+				// 	return isVisible ? '' : 'none';
+				// });
 		});
 	}
 
@@ -112,6 +130,23 @@ photoMap.factory('worldMapService', ['$q', function ($q) {
 
 			photos = data;
 
+			// TEMP
+			// Montevideo, Uruguay
+			photos.push({
+				GPSLongitude: -56.1819,
+				GPSLatitude: -34.8836
+			});
+			// Cape Town, South Africa
+			photos.push({
+				GPSLongitude: 18.4239,
+				GPSLatitude: -33.9253
+			});
+			// Dubai, UAE
+			photos.push({
+				GPSLongitude: 55.3333,
+				GPSLatitude: 24.9500
+			});
+
 			svg.append('g')
 					.attr('class', 'bubble')
 				.selectAll('circle')
@@ -123,11 +158,11 @@ photoMap.factory('worldMapService', ['$q', function ($q) {
 					.attr('r', function (d) {
 						return 2;
 					})
-					.style('fill', function (d) {
+					.attr('fill', function (d) {
 						if (d.GPSAltitude) {
 							return color(d.GPSAltitude);
 						}
-						return '#777';
+						return 'red';
 					});
 		});
 	}
@@ -139,8 +174,12 @@ photoMap.factory('worldMapService', ['$q', function ($q) {
 			.attr('width', width)
 			.attr('height', height);
 
+		svg.append('path')
+			.datum(graticule)
+			.attr('class', 'graticule')
+			.attr('d', path);
+
 		initMovement();
-		// initMap();
 		initMap().then(initPhotos);
 	}
 

@@ -37,15 +37,15 @@ photoMap.factory('photoMapService', ['$q', function ($q) {
 				def.reject();
 			}
 
-			svg.insert("path", ".graticule")
+			svg.insert('path')
 				.datum(topojson.feature(us, us.objects.land))
-				.attr("class", "land-light")
-				.attr("d", path);
+				.attr('class', 'land-light')
+				.attr('d', path);
 
-			svg.insert("path", ".graticule")
+			svg.insert('path')
 				.datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
-				.attr("class", "state-boundary")
-				.attr("d", path);
+				.attr('class', 'state-boundary')
+				.attr('d', path);
 
 			def.resolve();
 		});
